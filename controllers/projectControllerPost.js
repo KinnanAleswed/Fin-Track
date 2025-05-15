@@ -1,4 +1,4 @@
-import prisma from "../prisma/prismaClient.js";
+import prisma from '../prisma/prismaClient.js';
 
 export const createProject = async (req, res) => {
   try {
@@ -8,6 +8,7 @@ export const createProject = async (req, res) => {
       clientId,
       status,
       managerId,
+      billingType,
       billingRateTimePeriod,
       startDate,
       endDate,
@@ -20,21 +21,22 @@ export const createProject = async (req, res) => {
       data: {
         name,
         code,
-        clientId,
+        clientId: clientId || null,
         status,
-        managerId,
+        managerId: managerId || null,
         billingRateTimePeriod,
-        startDate ,
-        endDate,
+        startDate: new Date(startDate), // to accept date from front end(converts string to valid javascript one)
+        endDate: new Date(endDate),
         totalContract,
         approvedBudget,
         allocatedBudget,
+        billingType,
       },
     });
 
     return res.status(201).json(newProject);
   } catch (error) {
-    console.error("Error creating project:", error);
-    return res.status(500).json({ message: "Failed to create project" });
+    console.error('Error creating project:', error);
+    return res.status(500).json({ message: 'Failed to create project' });
   }
 };
