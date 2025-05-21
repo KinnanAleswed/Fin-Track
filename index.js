@@ -1,25 +1,28 @@
+// server/index.js
 import "dotenv/config";
 import express from "express";
-import createProjectRouter from "./routes/posts/createprojectPost.js";
 import cors from "cors";
+import projectRoutes from "./routes/projectRoutes.js"; // unified route file
+
 const app = express();
 
+// CORS config
 app.use(
   cors({
-    origin: "http://localhost:5174", //frontend URL
+    origin: "http://localhost:5173", // frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
   })
 );
 
 // Middleware
-app.use(express.json()); // Body parser
+app.use(express.json()); // Parse JSON request bodies
 
-// Routes
-app.use("/api", createProjectRouter);
+// API Routes
+app.use("/api", projectRoutes);
 
-// Server
-const PORT = 6000; // Changed from 5000
+// Start Server
+const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
